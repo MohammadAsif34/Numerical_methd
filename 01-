@@ -1,0 +1,116 @@
+ //                 COMPLETED
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+
+//FINDINF DECIMAL PLACE 
+double _key_decimal_place(double UserInput, int key){
+    //considered as after 4 decimal palces values as integer.
+    int actualValue = (int)(UserInput*pow(10,key+1));
+
+    //extract last digit to check round-off criteria.
+    if(actualValue%10 == 5) {
+        int preDigit = actualValue/10;
+            if((preDigit%10)%2 == 1){
+                preDigit++;
+                /*printf(" The round-off value is %.4lf",*/
+                return (double)preDigit/pow(10,key);
+            }else{
+                //printf(" The rounded value1 error is %lf",
+                return (double)preDigit/pow(10,key);
+            }
+    }
+    else if(actualValue%10 > 5){
+        int ans = (actualValue/10) +1;
+        /*printf( "\n The Round-off value is %.4lf",*/
+        return (double)ans/pow(10,key);
+    }else{
+        actualValue = actualValue/10;
+        //printf(" The rounded value2 is %lf",
+        return (double)actualValue/pow(10,key);
+    }
+    return 0 ;
+}
+
+//FINDING SIGNIFICANT FIGURE
+double _key_signifiacnt_figure(double UserInput, int key){
+
+    double _significan_figure;
+    //counting digit before decimal 
+    int c=UserInput,counter=0,d;
+    while (c!=0){
+        d=c%10;
+        c/=10;
+        counter++;
+    }
+    _significan_figure = _key_decimal_place(UserInput,(key-counter));
+    //printf(" The counter is %d",counter);
+    return _significan_figure;
+}
+
+// FINDING ABSOLUTE ERROR
+double _absolute_error(double ture_value, double approx_value ){
+    return (ture_value - approx_value);
+}
+
+// FINDING RELATIVE ERROR
+double _relative_error(double ture_value, double approx_value ){
+    return (_absolute_error(ture_value,approx_value))/ture_value;
+}
+
+// FINDIN PERCENTAGE ERROR
+double _percentage_error(double ture_value, double approx_value ){
+    return (_relative_error(ture_value, approx_value)*100);
+}
+
+// MAIN FUNCTION 
+int main(){
+    double Num1, Num2, Num3, Num4;
+    Num1 = 3.112458;
+    Num2 = 11.21249;
+    Num3 = 4.000124;
+    Num4 = 5.61245;
+
+
+    // Printing decimal value 
+    double _dp_1, _dp_2, _dp_3, _dp_4;
+    _dp_1 = _key_decimal_place(Num1,4); 
+    _dp_2 = _key_decimal_place(Num2,4); 
+    _dp_3 = _key_decimal_place(Num3,4);
+    _dp_4 = _key_decimal_place(Num4,4);
+        printf(" The rounded value is %.4lf\n",_dp_1);
+        printf(" The rounded value is %.4lf\n",_dp_2);
+        printf(" The rounded value is %.4lf\n",_dp_3);
+        printf(" The rounded value is %.4lf\n\n",_dp_4);
+    
+    // printing significant value 
+    double _sf_1, _sf_2, _sf_3, _sf_4;
+    _sf_1 = _key_signifiacnt_figure(Num1,3);
+    _sf_2 = _key_signifiacnt_figure(Num2,3);
+    _sf_3 = _key_signifiacnt_figure(Num3,3);
+    _sf_4 = _key_signifiacnt_figure(Num4,3);
+        printf(" The significant figure is %.2lf\n",_sf_1);
+        printf(" The significant figure is %.2lf  error found\n",_sf_2);
+        printf(" The significant figure is %.2lf\n",_sf_3);
+        printf(" The significant figure is %.2lf\n\n",_sf_4);
+        
+    // printing Absolute error
+        printf(" The absolute error is %lf \n",_absolute_error(_dp_1, _sf_1));
+        printf(" The absolute error is %lf \n",_absolute_error(_dp_2, _sf_2));
+        printf(" The absolute error is %lf \n",_absolute_error(_dp_3, _sf_3));
+        printf(" The absolute error is %lf \n\n",_absolute_error(_dp_4, _sf_4));
+        
+    // printing relative error
+        printf(" The absolute error is %lf \n",_relative_error(_dp_1, _sf_1));
+        printf(" The absolute error is %lf \n",_relative_error(_dp_2, _sf_2));
+        printf(" The absolute error is %lf \n",_relative_error(_dp_3, _sf_3));
+        printf(" The absolute error is %lf \n\n",_relative_error(_dp_4, _sf_4));
+
+    // printing percentage error
+        printf(" The percentage error is %lf \n",_percentage_error(_dp_1, _sf_1));
+        printf(" The percentage error is %lf \n",_percentage_error(_dp_2, _sf_2));
+        printf(" The percentage error is %lf \n",_percentage_error(_dp_3, _sf_3));
+        printf(" The percentage error is %lf \n\n",_percentage_error(_dp_4, _sf_4));
+        
+return 0;
+}
