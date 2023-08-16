@@ -1,0 +1,80 @@
+//          COMPLETED
+#include<stdio.h>
+#include<stdlib.h>
+
+int _factorial(int a);
+double evaluate(double for_int[], double p){
+    double _ans_nddif=for_int[1],term=1;
+    for (int i = 1; i < 5; i++){
+        int z=i-1;
+        while (z>=0){
+            term *= (p-z);
+            z--;
+        }
+        term*=for_int[i+1];
+        term = term / _factorial(i);
+        _ans_nddif = _ans_nddif + term;
+        term =1;
+    }
+    return _ans_nddif;
+    
+}
+int _factorial(int a){
+    int fact=1;
+    while (a!=0){
+        fact=fact*a;
+        a--;
+    }
+    return fact;
+}
+int main (){
+    int n;
+    printf("Enter the number of coordinates: ");
+    scanf("%d",&n);
+    double x[n], y[n],key, ans,mat[n][n],h,p,for_int[n],_ans_nddif_;
+    // taking input coordinates from the user
+    for (int i = 0; i < n; i++) {
+        printf("Enter %d coordinates (x, y): ", i + 1);
+        scanf("%lf%lf", &x[i], &y[i]);
+    }
+    //input key
+    printf(" ENter a key : ");
+    scanf("%lf",&key);
+    // assigning x in column-1, and y in column-2
+    for (int i=0; i<2; i++) {
+        for (int j=0; j<n; j++) {
+            if (i == 0)
+                mat[i][j] = x[j];
+            else if (i == 1)
+                mat[i][j] = y[j];
+        }
+    }
+    //evaluate full table
+    for(int i=2; i<n+1; i++){
+    	for(int j=0; j<n; j++){ 
+    		mat[i][j] = mat[i-1][j+1] - mat[i-1][j];
+		}
+	}
+    //table printing 
+    for (int i = 0; i < n+1; i++){
+        for (int j = 0; j < n; j++){
+            printf("%.0lf\t",mat[i][j]);
+        }
+        printf("\n");
+    }
+    //forward interpolation 
+    for (int i = 1; i <= n; i++){
+        for_int[i] = mat[i][0];
+    }
+    //Calculate h
+    h=x[1] - x[0];
+    //value of p 
+    p = (key - mat[0][0])/h;
+    printf(" h : %lf\t\t p : %lf",h,p);
+    _ans_nddif_ = evaluate(for_int,p);
+    printf(" \nThe newton forward interpolation formula : %lf",_ans_nddif_);
+
+
+    return 0;
+}
+
