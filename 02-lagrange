@@ -1,0 +1,47 @@
+// 
+#include<stdio.h>
+#include<math.h>
+
+double _lagrange_interpolation_formula (double x[], double y[], int _no_of_summation, double _f_x_value){
+    
+    double summation=0;
+     //first loop for summation
+    for (int i = 0; i < _no_of_summation; i++){
+        double term =y[i];
+        // 2nd loop for  pi
+        for (int j = 0; j < _no_of_summation; j++){
+            if(j != i){
+                term*=((_f_x_value- x[j]) /(x[j] - x[i]) );
+            }
+        }
+        summation+= term;
+    }
+    return summation;
+}
+
+int main(){
+    int n;
+    printf(" The the no. of pair of value : ");
+    scanf("%d",&n);
+    double  x[n],y[n],_f_x_value, _lagrange_ans;
+    
+    // Taking input of coordinates 
+    for (int i = 0; i < n; i++){
+        printf(" The %d value of (x, y) : ",i+1);
+        scanf("%lf%lf",&x[i],&y[i]);
+    }
+    
+    printf(" Enter the value of x { f(x) } : ");
+    scanf("%lf",&_f_x_value);
+    
+    //printing coordinates
+    for (int i = 0; i < n; i++)
+    {
+        printf("The %d coordinates : (%0.lf, %.0lf)\n",i,x[i],y[i]);
+    }
+    
+    _lagrange_ans= _lagrange_interpolation_formula(x,y,n,_f_x_value);
+    printf(" The value of x get from lagrange interpolation formula : %.2lf",_lagrange_ans);
+
+return 0;
+}
