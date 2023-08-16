@@ -1,0 +1,97 @@
+//          COMPLETED
+#include<stdio.h>
+#include<stdlib.h>
+
+int _factorial(int a );
+double evaluate_backward_if(double for_int[], double p,int n){
+    double _ans_nddif=for_int[0],term=1.0;
+    printf(" first summaton in ans : %lf\n",_ans_nddif);
+    for (int i = 0; i < n-1; i++){
+        int z=i;
+        while (z>=0){
+            term*=(p-z);
+            z--;
+        }
+        term*=for_int[i+1];
+        term/=_factorial(i+1);
+        _ans_nddif+=term;
+        term=1;
+    }
+    
+
+    
+    return _ans_nddif;
+    
+}
+int _factorial(int a){
+    int fact=1;
+    while (a!=0){
+        fact=fact*a;
+        a--;
+    }
+    return fact;
+}
+
+
+int main(){
+    int n;
+    printf("Enter the number of coordinates: ");
+    scanf("%d",&n);
+    double x[n], y[n],key, ans,mat[n][n],h,p,for_int[n],_ans_backward_if_;
+    // taking input coordinates from the user
+    for (int i = 0; i < n; i++) {
+        printf("Enter %d coordinates (x, y): ", i + 1);
+        scanf("%lf%lf", &x[i], &y[i]);
+    }
+    //input key
+    printf(" ENter a key : ");
+    scanf("%lf",&key);
+    // assigning x in column-1, and y in column-2
+    for (int i=0; i<2; i++) {
+        for (int j=0; j<n; j++) {
+            if (i == 0)
+                mat[i][j] = x[j];
+            else if (i == 1)
+                mat[i][j] = y[j];
+        }
+    }
+    //evlaute table 
+    int z=10;
+    for(int i=2; i<n+1; i++){
+    	for(int j=0; j<n; j++){
+            if(z<=j){
+                mat[i][j]=0;
+            }else{
+                mat[i][j] = mat[i-1][j+1] - mat[i-1][j];
+            }
+		}
+        z++;
+	}
+    //table printing 
+    for (int i = 0; i < n+1; i++){
+        for (int j = 0; j < n; j++){
+            printf("%.0lf\t",mat[i][j]);
+        }
+        printf("\n");
+    }
+    //backward interpolation 
+    int a=(n-1);
+    for (int i = 1; i <= n; i++){
+        for_int[i-1] = mat[i][a];
+        a--;
+    }
+    //printing backward initerpolation 
+    for (int i = 0; i < (n); i++){
+        printf(" The backward inpolation is %lf\n",for_int[i]);
+    }
+    
+    //Calculate h
+    h=x[1] - x[0];
+    //value of p 
+    p = (key - mat[0][n-1])/h;
+    printf(" h : %lf\t\t p : %lf",h,p);
+    
+    _ans_backward_if_ = evaluate_backward_if(for_int,p,n);
+    printf("\n\n------**** The backward interpolation : %lf",_ans_backward_if_);
+return 0;
+}   
